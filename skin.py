@@ -1,17 +1,24 @@
+# skin.py (snippet)
 import streamlit as st
 from PIL import Image
 import numpy as np
-from tensorflow.keras.models import load_model   # <- changed
+from tensorflow.keras.models import load_model   # <- changed from keras.models
+import io
 import os
+
+st.title("MedAI Skin Disease Detection")
 
 @st.cache_resource
 def load_detection_model():
     MODEL_PATH = "model.h5"
     if not os.path.exists(MODEL_PATH):
-        st.warning("Model file not found locally. If you host model externally, download it here.")
-        # optionally download from a URL if you host the model externally
+        st.warning("Model not found locally. Upload model.h5 to the repo or host externally.")
+        # Optionally: download it here from a public URL if you host it elsewhere
     model = load_model(MODEL_PATH, compile=False)
     return model
+
+model = load_detection_model()
+# rest of your app unchanged...
 
 
 SKIN_CLASSES = {
