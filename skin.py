@@ -1,18 +1,18 @@
 import streamlit as st
 from PIL import Image
 import numpy as np
-from keras.models import load_model
-import io
+from tensorflow.keras.models import load_model   # <- changed
+import os
 
-st.title("MedAI Skin Disease Detection")
-
-# Load model once globally with compile=False
 @st.cache_resource
 def load_detection_model():
-    model = load_model('model.h5', compile=False)
+    MODEL_PATH = "model.h5"
+    if not os.path.exists(MODEL_PATH):
+        st.warning("Model file not found locally. If you host model externally, download it here.")
+        # optionally download from a URL if you host the model externally
+    model = load_model(MODEL_PATH, compile=False)
     return model
 
-model = load_detection_model()
 
 SKIN_CLASSES = {
     0: 'Actinic Keratoses (Solar Keratoses) or intraepithelial Carcinoma (Bowen’s disease)',
